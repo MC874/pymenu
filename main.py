@@ -4,6 +4,7 @@ import re
 class colors:
 	RED_BG = '\033[41m\033[1m'
 	GREEN_BG = '\033[0;102m'
+	PURPLE_BG = '\033[45m'
 	GREEN = '\033[1;92m'
 	ENDC = '\033[m'
 
@@ -15,14 +16,18 @@ num_file = 1
 
 kali = '*'
 
+print('')
 with open('foodie.json') as f:
 	data = json.load(f)
-	for key, value in data.items():
-		Foody.append(key)
-		Pricy.append(value)
-		print(str(num_file) + ') ' + key + ': ' + str(value))
-		num_file = num_file + 1
-print('')
+	for x, y in data.items():
+		print(x)
+		for key, value in data[x].items():
+			Foody.append(key)
+			Pricy.append(value)
+			decim = value / 1000
+			print(str(num_file) + ') ' + key + ': [' + colors.PURPLE_BG  + f' {value} ' + colors.ENDC + '] / [' + colors.PURPLE_BG + f' {decim} ' + colors.ENDC + ']')
+			num_file = num_file + 1
+		print('')
 ask = input(' Pilih Menu: ')
 result = [str(x) for x in re.split(', |,| , | ,|; |;| ; | ;', ask)]
 for i in result:
