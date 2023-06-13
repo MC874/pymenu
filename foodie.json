@@ -1,78 +1,41 @@
 {
-	"[Paket Soto]":{
-		"Soto Kikil + Nasi": 25000,
-		"Soto Ayam + Nasi": 18000,
-		"Soto Babat Usus + Nasi": 25000
+	"[ Frostbite JCone ]":{
+		"Choco Vanilla Rainbow": 4000,
+		"Black & Pink": 6000,
+		"Cookies & Cream": 6000
 	},
 
-	"[Paket Nasi]":{
-		"Nasi Goreng Original": 15000,
-		"Nasi Goreng Pelangi": 17000,
-		"Nasi Goreng Spesial": 17000
+	"[ Frostbite ]":{
+		"[ Mochi ] Choco Lava Mochi": 4000,
+		"[ Mochi ] Cookies & Cream Mochi": 4000,
+		"[ Mochi ] Strawberry Sakura Mochi": 4000,
+		"[ Bland ] Vita Fruit": 4000,
+		"[ Stripes ] Boba Milk Tea": 5000,
+		"[ Cup ] Strawberry Vanilla": 5000,
+		"[ Cup ] Chocolate Vanilla": 5000,
+		"[ Cup ] Tutti Frutti Cup": 5000,
+		"[ Batang Sprinkles ] Crunchu Double Choco": 6000,
+		"[ Batang Sprinkles ] Cookies & Cream": 6000,
+		"[ Batang Sprinkles ] Choco Nut & Cashew": 6000
 	},
 
-	"[Paket Ayam]":{
-		"Ayam Geprek + Nasi": 17000,
-		"Ayam Kampung Geprek + Nasi": 25000,
-		"Ayam Saos Tiram + Nasi": 17000,
-		"Ayam Kampung Saos Tiram + Nasi": 25000,
-		"Ayam Mozarella + Nasi": 17000,
-		"Ayam Kampung Mozarella + Nasi": 25000
+	"[ Waku Waku ]":{
+		"[ Batang Kotak ] Choco Pop": 2000,
+		"[ Batang Bulat ] Strawberry Loop": 2000,
+		"[ Batang Lapis ] Choco Loop": 3000,
+		"[ Batang Lapis ] Choco Berry Loop": 3000,
+		"[ Batang Lapis ] Mango Loop": 3000,
+		"[ Batang Mix ] Cotton Candy": 4000,
+		"[ Batang Mix ] Sweet Lychee": 4000,
+		"[ Batang Mix ] Mixed Berry": 4000
 	},
 
-	"[Paket Lain]":{
-		"Pecel Lele + Nasi": 17000,
-		"Nasi Timbel Kumplit": 20000,
-		"Nasi Timbel Kampung Kumplit": 27000,
-		"Rendang Kumplit": 20000,
-		"Ayam Bakar Kumplit": 25000,
-		"Ayam Bakar Kampung Kumplit": 32000,
-		"Ikan Bakar Kumplit": 25000,
-		"Nasi Biasa + Telor": 10000
-	},
-
-	"[Satuan Soto]":{
-		"Soto Kikil": 20000,
-		"Soto Ayam": 13000,
-		"Soto Babat": 20000
-	},
-
-	"[Satuan Ayam]":{
-		"Ayam Geprek": 13000,
-		"Ayam Kampung Geprek": 20000,
-		"Ayam Saos Tiram": 13000,
-		"Ayam Kampung Saos Tiram": 20000,
-		"Ayam Mozarella": 13000,
-		"Ayam Kampung Mozarella": 20000
-	},
-
-	"[Satuan Lain]":{
-		"Pecel Lele": 10000,
-		"Rendang": 15000,
-		"Ayam Bakar": 13000,
-		"Ayam Kampung Bakar": 20000,
-		"Ikan Bakar": 20000,
-		"Tahu / Tempe": 1000,
-		"Nasi": 5000,
-		"Telor Dadar": 5000
-	},
-
-	"[Minuman]":{
-		"Aqua Kecil": 2000,
-		"Aqua Besar": 4000,
-		"Sprite": 5000,
-		"Coca Cola": 5000,
-		"Fanta": 5000,
-		"Teh Pucuk": 5000,
-		"Larutan Kaleng": 7000,
-		"Adem Sari": 8000,
-		"Pocari Sweat": 7000,
-		"Teh Kotak": 4000,
-		"Mogu-Mogu": 10000,
-		"Pulpy Orange": 5500,
-		"You C 1000": 8500,
-		"Kratindaeng": 6000,
-		"Juice": 10000,
-		"Sop Buah": 10000
+	"[ Haku ]":{
+		"[ Ikan ] [ Es Krim Biskuit ] Vanilla & Crispy Choco Monaka": 6000,
+		"[ Ikan ] [ Es Krim Biskuit ] Strawberry & Crispy Choco Monaka": 6000,
+		"[ Ikan ] [ Es Krim Biskuit ] Double Crispy Choco Monaka": 6000,
+		"[ Cone ] Tokyo Cheese  Delight": 10000,
+		"[ Es Krim Kue ] Tiramisu": 10000,
+		"[ Es Krim Kue ] Blueberry Cheesecake": 10000
 	}
 }
