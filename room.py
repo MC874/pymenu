@@ -1,5 +1,8 @@
-import json
 import re
+import os
+import json
+import datetime
+from jsonmerge import merge
 
 class colors:
 	RED_BG = '\033[41m\033[1m'
@@ -10,14 +13,13 @@ class colors:
 
 Pricy = []
 Foody = []
+location = f'./{str(datetime.datetime.now().strftime("%Y%m%d"))}.json'
 
 allin = 0
 num_file = 1
 
-kali = '*'
-
 print('')
-with open('foodie.json') as f:
+with open('foodie3.json') as f:
 	data = json.load(f)
 	for x, y in data.items():
 		print(x)
@@ -45,3 +47,9 @@ else:
 	kembalian = int(umoney) - int(allin)
 kembali = int(kembalian) / 1000
 print('Kembalian: '+ colors.RED_BG + f' {str(kembalian)} ' + colors.ENDC + ' / ' + colors.RED_BG + f' {str(kembali)} ' + colors.ENDC)
+
+if os.path.isfile(location) is False:
+	with open(location, 'w') as f:
+		f.write('{}')
+with open(location, 'r+') as f:
+	json_content = json.load(f)
