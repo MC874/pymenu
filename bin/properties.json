@@ -1,0 +1,200 @@
+{
+    "Frostbite":
+    [
+        {
+            "products": "Choco Lava Mochi",
+            "categories": "mochi",
+            "icons": "img/frostbite/frostbite_mochi_choco_lava.jpg",
+            "prices": 4000
+        },
+        {
+            "products": "Cookies & Cream Mochi",
+            "categories": "mochi",
+            "icons": "img/frostbite/frostbite_mochi_cookies_cream.jpg",
+            "prices": 4000
+        },
+        {
+            "products": "Strawberry Sakura Mochi",
+            "categories": "mochi",
+            "icons": "img/frostbite/frostbite_mochi_strawberry_sakura.jpg",
+            "prices": 4000
+        },
+        {
+            "products": "Vita Fruit",
+            "categories": "batang",
+            "icons": "img/frostbite/frostbite_vita_fruit",
+            "prices": 4000
+        },
+        {
+            "products": "Boba Milk Tea",
+            "categories": "batang",
+            "icons": "img/frostbite/frostbite_boba_milk_tea.jpg",
+            "prices": 4000
+        },
+        {
+            "products": "Strawberry Vanilla",
+            "categories": "cup",
+            "icons": "img/frostbite/frosbite_cup_strawberry_vanilla.jpg",
+            "prices": 5000
+        },
+        {
+            "products": "Chocolate Vanilla",
+            "categories": "cup",
+            "icons": "img/frostbite/frostbite_cup_chocolate_vanilla.jpg",
+            "prices": 5000
+        },
+        {
+            "products": "Tutti Frutti",
+            "categories": "cup",
+            "icons": "img/frostbite/frosbite_cup_tutti_frutti.jpg",
+            "prices": 5000
+        },
+        {
+            "products": "Cruncy Double Choco",
+            "categories": "batang",
+            "icons": "img/frostbite/frosbite_crunchy_double_choco.jpg",
+            "prices": 6000
+        },
+        {
+            "products": "Cookies & Cream Stick",
+            "categories": "batang",
+            "icons": "img/frostbite/frostbite_cookies_cream_stick.jpg",
+            "prices": 6000
+        },
+        {
+            "products": "Choco Nut & Cashew",
+            "categories": "batang",
+            "icons": "img/frostbite/frosbite_choco_cashew.jpg",
+            "prices": 6000
+        }
+    ],
+    "Frostbite JCone":
+    [
+        {
+            "products": "Choco Vanilla Rainbow",
+            "categories": "cone",
+            "icons": "img/frostbite_jcone/jcone_choco_vanilla_rainbow.jpg",
+            "prices": 4000
+        },
+        {
+            "products": "Black & Pink",
+            "categories": "cone",
+            "icons": "img/frostbite_jcone/jcone_black_pink.jpg",
+            "prices": 6000
+        },
+        {
+            "products": "Cookies & Cream Cone",
+            "categories": "cone",
+            "icons": "img/frostbite_jcone/jcone_cookies_cream.jpg",
+            "prices": 6000
+        }
+    ],
+    "Waku Waku":
+    [
+        {
+            "products": "Choco Pop",
+            "categories": "batang",
+            "icons": "img/waku/waku_choco_pop.jpg",
+            "prices": 2000
+        },
+        {
+            "products": "Strawberry Loop",
+            "categories": "batang",
+            "icons": "img/waku/waku_strawberry_loop.jpg",
+            "prices": 2000
+        },
+        {
+            "products": "Choco Dinosaur",
+            "categories": "batang",
+            "icons": "img/waku/waku_choco_dinosaur.jpg",
+            "prices": 3000
+        },
+        {
+            "products": "Choco Loop",
+            "categories": "batang",
+            "icons": "img/waku/waku_choco_loop.jpg",
+            "prices": 3000
+        },
+        {
+            "products": "Choco Berry Loop",
+            "categories": "batang",
+            "icons": "img/waku/waku_choco_berry_loop.jpg",
+            "prices": 3000
+        },
+        {
+            "products": "Mango Loop",
+            "categories": "batang",
+            "icons": "img/waku/waku_mango_loop.jpg",
+            "prices": 3000
+        },
+        {
+            "products": "Cotton Candy",
+            "categories": "batang",
+            "icons": "img/waku/waku_cotton_candy.jpg",
+            "prices": 4000
+        },
+        {
+            "products": "Sweet Lychee",
+            "categories": "batang",
+            "icons": "img/waku/waku_sweet_lychee.jpg",
+            "prices": 4000
+        },
+        {
+            "products": "Mixed Berry",
+            "categories": "batang",
+            "icons": "img/waku/waku_mixed_berry.jpg",
+            "prices": 4000
+        }
+    ],
+    "Haku":
+    [
+        {
+            "products": "Vanilla & Crispy Choco Monaka",
+            "categories": "cake",
+            "icons": "img/haku/haku_vanilla_crispy_choco_monaka.jpg",
+            "prices": 6000
+        },
+        {
+            "products": "Strawberry & Crispy Choco Monaka",
+            "categories": "cake",
+            "icons": "img/haku/haku_strawberry_crispy_choco_monaka.jpg",
+            "prices": 6000
+        },
+        {
+            "products": "Double Crispy Choco Monaka",
+            "categories": "cake",
+            "icons": "img/haku/haku_double_crispy_choco_monaka.jpg",
+            "prices": 6000
+        },
+        {
+            "products": "Tokyo Cheese Delight",
+            "categories": "cone",
+            "icons": "img/haku/haku_tokyo_cheese_delight.jpg",
+            "prices": 10000
+        },
+        {
+            "products": "Blueberry Cheesecake",
+            "categories": "cake",
+            "icons": "img/haku/haku_blueberry_cheesecake.jpg",
+            "prices": 10000
+        },
+        {
+            "products": "Tiramisu",
+            "categories": "cake",
+            "icons": "img/haku/haku_tiramisu.jpg",
+            "prices": 10000
+        },
+        {
+            "products": "Vanilla Monaka",
+            "categories": "cake",
+            "icons": "img/haku/haku_vanilla_monaka.jpg",
+            "prices": 14000
+        },
+        {
+            "products": "Matcha Monaka",
+            "categories": "cake",
+            "icons": "img/haku/haku_matcha_monaka.jpg",
+            "prices": 14000
+        }
+    ]
+}
