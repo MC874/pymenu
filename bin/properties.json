@@ -8,7 +8,7 @@
             "prices": 4000
         },
         {
-            "products": "Cookies & Cream Mochi",
+            "products": "Cookies Cream Mochi",
             "categories": "mochi",
             "icons": "img/frostbite/frostbite_mochi_cookies_cream.jpg",
             "prices": 4000
@@ -34,7 +34,7 @@
         {
             "products": "Strawberry Vanilla",
             "categories": "cup",
-            "icons": "img/frostbite/frosbite_cup_strawberry_vanilla.jpg",
+            "icons": "img/frostbite/frostbite_cup_strawberry_vanilla.jpg",
             "prices": 5000
         },
         {
@@ -46,25 +46,25 @@
         {
             "products": "Tutti Frutti",
             "categories": "cup",
-            "icons": "img/frostbite/frosbite_cup_tutti_frutti.jpg",
+            "icons": "img/frostbite/frostbite_cup_tutti_frutti.jpg",
             "prices": 5000
         },
         {
             "products": "Cruncy Double Choco",
             "categories": "batang",
-            "icons": "img/frostbite/frosbite_crunchy_double_choco.jpg",
+            "icons": "img/frostbite/frostbite_crunchy_double_choco.jpg",
             "prices": 6000
         },
         {
-            "products": "Cookies & Cream Stick",
+            "products": "Cookies Cream Stick",
             "categories": "batang",
             "icons": "img/frostbite/frostbite_cookies_cream_stick.jpg",
             "prices": 6000
         },
         {
-            "products": "Choco Nut & Cashew",
+            "products": "Choco Nut Cashew",
             "categories": "batang",
-            "icons": "img/frostbite/frosbite_choco_cashew.jpg",
+            "icons": "img/frostbite/frostbite_choco_cashew.jpg",
             "prices": 6000
         }
     ],
@@ -77,13 +77,13 @@
             "prices": 4000
         },
         {
-            "products": "Black & Pink",
+            "products": "Black Pink",
             "categories": "cone",
             "icons": "img/frostbite_jcone/jcone_black_pink.jpg",
             "prices": 6000
         },
         {
-            "products": "Cookies & Cream Cone",
+            "products": "Cookies Cream Cone",
             "categories": "cone",
             "icons": "img/frostbite_jcone/jcone_cookies_cream.jpg",
             "prices": 6000
@@ -149,13 +149,13 @@
     "Haku":
     [
         {
-            "products": "Vanilla & Crispy Choco Monaka",
+            "products": "Vanilla Crispy Choco Monaka",
             "categories": "cake",
             "icons": "img/haku/haku_vanilla_crispy_choco_monaka.jpg",
             "prices": 6000
         },
         {
-            "products": "Strawberry & Crispy Choco Monaka",
+            "products": "Strawberry Crispy Choco Monaka",
             "categories": "cake",
             "icons": "img/haku/haku_strawberry_crispy_choco_monaka.jpg",
             "prices": 6000
