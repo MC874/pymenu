@@ -1,68 +1,463 @@
+
 import os
 import sys
 import glob
+import time
 import json
 import datetime
+import operator
 from jsonmerge import merge, Merger
 from PySide6.QtWidgets import QApplication, QWidget, QHBoxLayout, QPushButton, QLabel, QLineEdit, QVBoxLayout, QMainWindow, QScrollArea
 from PySide6.QtGui import QIcon
-from PySide6.QtCore import QSize
+from PySide6.QtCore import QSize, QTimer, QCoreApplication
 from PySide6.QtCore import Qt
 
 location = f"./{str(datetime.datetime.now().strftime('%Y%m%d'))}.json"
 
-class interface(QWidget):
-    def __init__(self):
-        super().__init__()
-        wrappers = QVBoxLayout()
+class MainWindow(QWidget): 
+	def __init__(self):
+		super().__init__()
+		self.wrappers = QVBoxLayout()
 
-        with open('./bin/properties.json', 'r+') as file:
-            json_content = json.load(file)
-        for section in list(json_content):
-            self.products_num = 0
-            self.layout_num = 0
-            while not self.products_num == len(json_content[section]):
-                exec(f'{section}_layout{self.layout_num} = QHBoxLayout()')
-                exec(f'{section}_layout{self.layout_num}.setAlignment(Qt.AlignmentFlag.AlignLeft)')
-                for _ in range(4):
-                    names = json_content[section][self.products_num - 1]['products']
-                    pseudo = json_content[section][self.products_num - 1]['products'].replace(' ', '_').lower()
-                    def __templates__(texti):
-                        if controllers['current_products'].get(texti) is not None:
-                            controllers['current_products'][texti] += 1
-                        else:
-                            controllers['current_products'][texti] = 1
-                        print(controllers)
-                        exec(f'{pseudo}_label.setText("{controllers["current_products"][names]}")')
-                    locals()[f'{pseudo}_submit'] = __templates__
-                    exec(f'{pseudo}_layout = QVBoxLayout()')
-                    exec(f'{pseudo}_layout.setAlignment(Qt.AlignmentFlag.AlignLeft)')
-                    exec(f'{pseudo}_button = QPushButton()')
-                    exec(f'globals()["{pseudo}_label"] = QLabel()')
-                    exec(f'{pseudo}_button.setFixedSize(100, 100)')
-                    exec(f'{pseudo}_button.setIcon(QIcon("{json_content[section][self.products_num - 1]["icons"]}"))')
-                    exec(f'{pseudo}_button.setIconSize(QSize(110, 110))')
-                    exec(f'{pseudo}_button.clicked.connect({pseudo}_submit)')
-                    exec(f'{pseudo}_layout.addWidget({pseudo}_button, alignment=Qt.AlignmentFlag.AlignCenter)')
-                    exec(f'{pseudo}_layout.addWidget({pseudo}_label, alignment=Qt.AlignmentFlag.AlignCenter)')
-                    exec(f'{section}_layout{self.layout_num}.addLayout({pseudo}_layout)')
-                    if not self.products_num == len(json_content[section]):
-                        self.products_num += 1
-                exec(f'wrappers.addLayout({section}_layout{self.layout_num})')
-                self.layout_num += 1
-        self.setLayout(wrappers)
+		with open('./bin/properties.json') as file:
+			json_content = json.load(file)
+
+		for element in list(json_content):
+			section_layout = QVBoxLayout()
+			section_label = QLabel(element)
+			section_layout.addWidget(section_label)
+			layout_num = 0
+			products_num = 0
+			products_total = len(json_content[element]) - 1
+			while not products_num == products_total:
+				product_layout = QHBoxLayout()
+				product_layout.setAlignment(Qt.AlignmentFlag.AlignLeft)
+				for _ in range(4):
+					texti = json_content[element][products_num]
+					btn_layout = QVBoxLayout()
+					btn_layout.setAlignment(Qt.AlignmentFlag.AlignLeft)
+					btn_label = QLabel()
+					btn = QPushButton()
+					btn.setIcon(QIcon(json_content[element][products_num]['icons']))
+					btn.setFixedSize(100, 100)
+					btn.setIconSize(QSize(110, 110))
+					btn.clicked.connect(lambda *args, texti=texti, btn_label=btn_label: self.templates(texti, btn_label))
+					btn_layout.addWidget(btn, alignment=Qt.AlignmentFlag.AlignCenter)
+					btn_layout.addWidget(btn_label, alignment=Qt.AlignmentFlag.AlignCenter)
+					product_layout.addLayout(btn_layout)
+					if not (products_num == products_total):
+						products_num += 1
+					else:
+						break
+				section_layout.addLayout(product_layout)
+				layout_num += 1
+			self.wrappers.addLayout(section_layout)
+		
+		self.props_templates()
+		self.section_templates()
+		self.button_templates()
+		self.setLayout(self.wrappers)
+
+	def templates(self, texti, label):
+		controllers['labels'].append(label)
+		if stores['products'].get(texti['products']) is not None:
+			stores['products'][texti['products']] += 1
+		else:
+			stores['products'][texti['products']] = 1
+		label.setText(f"{stores['products'][texti['products']]}")
+		stores['prices'] += texti['prices']
+		label.setText(str(stores['products'][texti['products']]))
+		self.moneys_label.setText(f"Total Moneys: {stores['prices']}")
+
+	def props_templates(self):
+		self.moneys_label = QLabel('Total Moneys: ')
+		self.expense_label = QLabel('Total Expenses: ')
+		self.cuts_label = QLabel('Total Cuts: ')
+		self.warning_label = QLabel()
+		self.warning_label.setStyleSheet('color:red')
+
+		self.incomes_label = QLabel('Total Incomes: ')
+		self.earnings_label = QLabel('Total Earnings: ')
+		self.reports_label = QLabel('Total Reports: ')
+		self.paybacks_label = QLabel()
+		self.paybacks_label.setStyleSheet('color:red')
+
+		props_layout1 = QVBoxLayout()
+		props_layout1.addWidget(self.moneys_label)
+		props_layout1.addWidget(self.expense_label)
+		props_layout1.addWidget(self.reports_label)
+		props_layout1.addWidget(self.warning_label)
+
+		props_layout2 = QVBoxLayout()
+		props_layout2.addWidget(self.incomes_label)
+		props_layout2.addWidget(self.cuts_label)
+		props_layout2.addWidget(self.earnings_label)
+		props_layout2.addWidget(self.paybacks_label)
+
+		props_wrapper = QHBoxLayout()
+		props_label = QLabel('Properties')
+		props_wrapper.addLayout(props_layout1)
+		props_wrapper.addLayout(props_layout2)
+
+		self.wrappers.addLayout(props_wrapper)
+	
+	def section_templates(self):
+		customer_layout = QVBoxLayout()
+		self.customer_label = QLabel('Customers: ')
+		self.customer_edit = QLineEdit()
+		self.customer_edit.editingFinished.connect(self.customer_submit)
+		customer_layout.addWidget(self.customer_label, alignment=Qt.AlignmentFlag.AlignCenter)
+		customer_layout.addWidget(self.customer_edit)
+
+		self.wrappers.addLayout(customer_layout)
+
+	def button_templates(self):
+		accept_button = QPushButton('Accept')
+		accept_button.clicked.connect(self.accept_submit)
+		reset_button = QPushButton('Reset')
+		reset_button.clicked.connect(self.reset_submit)
+
+		current_button = QPushButton('Current')
+		current_button.clicked.connect(self.current_button_submit)
+		any_button = QPushButton('Any')
+		any_button.clicked.connect(self.any_button_submit)
+
+		expenses_button = QPushButton('Expenses')
+		expenses_button.clicked.connect(self.expenses_submit)
+		stats_button = QPushButton('Statistics')
+		stats_button.clicked.connect(self.stats_submit)
+
+		button_layout1 = QHBoxLayout()
+		button_layout1.addWidget(accept_button)
+		button_layout1.addWidget(reset_button)
+
+		button_layout2 = QHBoxLayout()
+		button_layout2.addWidget(current_button)
+		button_layout2.addWidget(any_button)
+
+		button_layout3 = QHBoxLayout()
+		button_layout3.addWidget(expenses_button)
+		button_layout3.addWidget(stats_button)
+
+		button_wrappers = QVBoxLayout()
+		button_wrappers.addLayout(button_layout1)
+		button_wrappers.addLayout(button_layout2)
+		button_wrappers.addLayout(button_layout3)
+
+		self.wrappers.addLayout(button_wrappers)
+
+	def customer_submit(self):
+		if int(self.customer_edit.text()) < 999:
+			stores['customers'] += int(self.customer_edit.text()) * 1000
+		else:
+			stores['customers'] += int(self.customer_edit.text())
+		self.customer_label.setText(f"Customers: {stores['customers']}")
+
+	def any_button_submit(self):
+		total_money = 0
+		total_products = 0
+		total_expenses = 0
+		for file in glob.glob('./*.json'):
+			with open(file, 'r+') as file:
+				json_content = json.load(file)
+			for element in list(json_content):
+				for elem in json_content[element].get('products', []):
+					total_products += elem['numbers']
+				total_money += json_content[element].get('profits', 0)
+				total_expenses += json_content[element].get('expenses', 0)
+		total_cuts = total_products * 1000
+		total_incomes = total_money - total_cuts + total_expenses
+		total_earnings = (total_incomes * 22.2222) / 100
+
+		self.moneys_label.setText(f'Total Moneys: {total_money}')
+		self.expense_label.setText(f'Total Expenses: {total_expenses}')
+		self.reports_label.setText(f'Total Reports: {total_products}')
+		self.warning_label.setText('')
+
+		self.incomes_label.setText(f'Total Incomes: {total_incomes}')
+		self.earnings_label.setText(f'Total Earnings: {total_earnings}')
+		self.cuts_label.setText(f'Total Cuts: {total_cuts}')
+		self.paybacks_label.setText('')
+
+	def current_button_submit(self):
+		with open(location, 'r+') as file:
+			json_content = json.load(file)
+		total_money = 0
+		total_products = 0
+		total_expenses = 0
+		for element in list(json_content):
+			for elem in json_content[element].get('products', []):
+				total_products += elem['numbers']
+			total_money += json_content[element].get('profits', 0)
+			total_expenses += json_content[element].get('expenses', 0)
+		total_cuts = total_products * 1000
+		total_incomes = total_money - total_cuts
+		total_earnings = ((total_incomes * 22.2222) / 100) + total_expenses
+
+		self.moneys_label.setText(f'Total Moneys: {total_money}')
+		self.expense_label.setText(f'Total Expenses: {total_expenses}')
+		self.reports_label.setText(f'Total Reports: {total_products}')
+		self.warning_label.setText('')
+
+		self.incomes_label.setText(f'Total Incomes: {total_incomes}')
+		self.earnings_label.setText(f'Total Earnings: {total_earnings}')
+		self.cuts_label.setText(f'Total Cuts: {total_cuts}')
+		self.paybacks_label.setText('')
+	
+	def expenses_submit(self):
+		global mainWin
+		mainWin = ExpenseWindow()
+		scrolls.setWidget(mainWin)
+		main_window.show()
+
+	def stats_submit(self):
+		global mainWin
+		mainWin = StatsWindow()
+		scrolls.setWidget(mainWin)
+		main_window.show()
+
+	def reset_submit(self):
+		for i in controllers['labels']:
+			i.setText('')
+
+		self.moneys_label.setText('Total Moneys: ')
+		self.expense_label.setText('Total Expenses: ')
+		self.reports_label.setText('Total Reports: ')
+
+		self.incomes_label.setText('Total Incomes: ')
+		self.earnings_label.setText('Total Earnings: ')
+		self.cuts_label.setText('Total Cuts: ')	
+
+		self.customer_edit.clear()
+		global_var()
+
+	def accept_submit(self):
+		self.warning_label.setText('')
+		self.paybacks_label.setText('')
+		self.customer_label.setText('')
+		saves()
+		if stores['paybacks'] > 0:
+			self.paybacks_label.setText(f"*Paybacks: {stores['paybacks']}")
+		elif stores['paybacks'] < 0:
+			self.warning_label.setText(f"*Money: {stores['paybacks']}")
+		self.reset_submit()
+		global_var()
+
+class ExpenseWindow(QWidget):
+	def __init__(self):
+		super().__init__()
+		self.expense_wrappers = QVBoxLayout()
+		self.button_templates()
+		self.section_templates()
+		self.props_templates()
+		self.setLayout(self.expense_wrappers)
+
+	def expense_submit(self):
+		if int(self.expense_edit.text()) < 999:
+			outers['expenses'] += int(self.expense_edit.text()) * 1000
+		else:
+			outers['expenses'] += int(self.expense_edit.text()) * 1000
+	
+	def reason_submit(self):
+		outers['reasons'] += self.reason_edit.text()
+		self.reasons_label.setText(f"Reasons: {outers['reasons']}")
+
+	def templates(self, texti, label):
+		controllers['labels'].append(label)
+		if outers['outers'].get(texti['products']) is not None:
+			outers['outers'][texti['products']] += 1
+		else:
+			outers['outers'][texti['products']] = 1
+		label.setText(f"{outers['outers'][texti['products']]}")
+		outers['expenses'] += -texti['prices']
+		label.setText(str(outers['outers'][texti['products']]))
+		self.expenses_label.setText(f"Expenses: {outers['expenses']}")
+
+	def reset_submit(self):
+		for i in controllers['labels']:
+			i.setText('')
+
+		self.expenses_label.setText('Total Moneys: ')
+		self.reasons_label.setText('Total Expenses: ')
+
+		self.expense_edit.clear()
+		self.reason_edit.clear()
+
+		global_var()
+
+	def accept_submit(self):
+		saves()
+		global_var()
+
+	def menus_submit(self):
+		global mainWin
+		mainWin = MainWindow()
+		scrolls.setWidget(mainWin)
+		main_window.show()
+
+	def stats_submit(self):
+		global mainWin
+		mainWin = StatsWindow()
+		scrolls.setWidget(mainWin)
+		main_window.show()
+
+	def menu_submit(self):
+		global mainWin
+		mainWin = MainWindow()
+		scrolls.setWidget(mainWin)
+		main_window.show()
+		print(mainWin)
+
+	def section_templates(self):
+		expense_layout = QHBoxLayout()
+		expense_label = QLabel('Expenses: ')
+		self.expense_edit = QLineEdit()
+		self.expense_edit.editingFinished.connect(self.expense_submit)
+		expense_layout.addWidget(expense_label)
+		expense_layout.addWidget(self.expense_edit)
+
+		reason_layout = QHBoxLayout()
+		reason_label = QLabel('Reasons: ')
+		self.reason_edit = QLineEdit()
+		self.reason_edit.editingFinished.connect(self.reason_submit)
+		reason_layout.addWidget(reason_label)
+		reason_layout.addWidget(self.reason_edit)
+
+		section_layout = QHBoxLayout()
+		self.expenses_label = QLabel('Expenses: ')
+		self.reasons_label = QLabel('Reasons: ')
+		section_layout.addWidget(self.expenses_label)
+		section_layout.addWidget(self.reasons_label)
+
+		section_wrappers = QVBoxLayout()
+		section_wrappers.addLayout(section_layout)
+		section_wrappers.addLayout(expense_layout)
+		section_wrappers.addLayout(reason_layout)
+
+		self.expense_wrappers.addLayout(section_wrappers)
+
+	def props_templates(self):
+		accept_button = QPushButton('Accept')
+		accept_button.clicked.connect(self.accept_submit)
+		reset_button = QPushButton('Reset')
+		reset_button.clicked.connect(self.reset_submit)
+
+		menus_button = QPushButton('Menus')
+		menus_button.clicked.connect(self.menus_submit)
+		stats_button = QPushButton('Statistics')
+		stats_button.clicked.connect(self.stats_submit)
+
+		button_layout1 = QHBoxLayout()
+		button_layout1.addWidget(accept_button)
+		button_layout1.addWidget(reset_button)
+
+		button_layout2 = QHBoxLayout()
+		button_layout2.addWidget(menus_button)
+		button_layout2.addWidget(stats_button)
+
+		button_wrappers = QVBoxLayout()
+		button_wrappers.addLayout(button_layout1)
+		button_wrappers.addLayout(button_layout2)
+
+		self.expense_wrappers.addLayout(button_wrappers)
+
+	def button_templates(self):
+		with open('./bin/properties.json') as file:
+			json_content = json.load(file)
+
+		for element in list(json_content):
+			section_layout = QVBoxLayout()
+			section_label = QLabel(element)
+			section_layout.addWidget(section_label)
+			layout_num = 0
+			products_num = 0
+			products_total = len(json_content[element]) - 1
+			while not products_num == products_total:
+				product_layout = QHBoxLayout()
+				product_layout.setAlignment(Qt.AlignmentFlag.AlignLeft)
+				for _ in range(4):
+					texti = json_content[element][products_num]
+					btn_layout = QVBoxLayout()
+					btn_layout.setAlignment(Qt.AlignmentFlag.AlignLeft)
+					btn_label = QLabel()
+					btn = QPushButton()
+					btn.setIcon(QIcon(json_content[element][products_num]['icons']))
+					btn.setFixedSize(100, 100)
+					btn.setIconSize(QSize(110, 110))
+					btn.clicked.connect(lambda *args, texti=texti, btn_label=btn_label: self.templates(texti, btn_label))
+					btn_layout.addWidget(btn, alignment=Qt.AlignmentFlag.AlignCenter)
+					btn_layout.addWidget(btn_label, alignment=Qt.AlignmentFlag.AlignCenter)
+					product_layout.addLayout(btn_layout)
+					if not (products_num == products_total):
+						products_num += 1
+					else:
+						break
+				section_layout.addLayout(product_layout)
+				layout_num += 1
+			self.expense_wrappers.addLayout(section_layout)
 
 def global_var():
-    global controllers
-    controllers = {'current_products': {}, 'current_prices': 0, 'customer_moneys': 0, 'current_expenses': 0, 'current_reasons': ''}
+	global controllers, stores, outers
+	stores = {'products': {}, 'prices': 0, 'customers': 0, 'paybacks': 0}
+	outers = {'outers': {}, 'expenses': 0, 'reasons': ''}
+	controllers = {'labels': [], 'operators': operator.iadd}
 
-if os.path.isfile(location) is False:
-    with open(location, 'w') as f:
-        f.write('{}')
-os.chdir(os.path.dirname(sys.argv[0]))
-global_var()
+def saves():
+	dates = str(datetime.datetime.now().strftime('%Y%m%d_%H%M%S'))
+	jsonize = {}
+	jsonize[dates] = {}
+	if stores['prices']:
+		jsonize[dates]['profits'] = stores['prices']
+	if stores['customers']:
+		paybacks = stores['customers'] - stores['prices']
+		stores['paybacks'] += paybacks
+		if paybacks > 0:
+			jsonize[dates]['paybacks'] = paybacks
+		elif paybacks < 0:
+			jsonize[dates]['paybacks'] = paybacks
+		jsonize[dates]['received'] = stores['customers']
+	if stores['products']:
+		jsonize[dates]['products'] = []
+		for element in list(stores['products']):
+			with open('./bin/properties.json', 'r+') as file:
+				json_content = json.load(file)
+			for elem in list(json_content):
+				for ele in json_content[elem]:
+					if element == ele['products']:
+						jsonize[dates]['products'].append(merge(ele, {'numbers': stores['products'][element]}))
+	if outers['outers']:
+		jsonize[dates]['outers'] = []
+		for element in list(stores['products']):
+			with open('./bin/properties.json', 'r+') as file:
+				json_content = json.load(file)
+			for elem in list(json_content):
+				for ele in json_content[elem]:
+					if element == ele['products']:
+						jsonize[dates]['products'].append(merge(ele, {'numbers': stores['products'][element]}))
+	if outers['expenses']:
+		jsonize[dates]['expenses'] = outers['expenses']
+		if outers['reasons']:
+			jsonize[dates]['reasons'] = outers['reasons']
+	with open(location, 'r+') as file:
+		json_content = json.load(file)
+		file.seek(0)
+		file.write(json.dumps(merge(json_content, jsonize), sort_keys = True, indent = 4))
 
-app = QApplication()
-window = interface()
-window.show()
-app.exec()
+if __name__ == "__main__":
+	if os.path.isfile(location) is False:
+		with open(location, 'w') as f:
+			f.write('{}')
+	os.chdir(os.path.dirname(sys.argv[0]))
+	global_var()
+
+	app = QApplication(sys.argv)
+	main_window = QMainWindow()
+	mainWin = MainWindow()
+	scrolls = QScrollArea()
+	scrolls.setWidget(mainWin)
+	main_window.setCentralWidget(scrolls)
+	main_window.setWindowTitle('Icelander v1.3')
+	main_window.setWindowIcon(QIcon('icelander.ico'))
+	main_window.resize(450, 600)
+	main_window.show()
+	app.exec()
