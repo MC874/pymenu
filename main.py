@@ -18,7 +18,13 @@ class MainWindow(QWidget):
 	def __init__(self):
 		super().__init__()
 		self.wrappers = QVBoxLayout()
+		self.generate_templates()
+		self.props_templates()
+		self.section_templates()
+		self.button_templates()
+		self.setLayout(self.wrappers)
 
+	def generate_templates(self):
 		with open('./bin/properties.json') as file:
 			json_content = json.load(file)
 
@@ -52,22 +58,6 @@ class MainWindow(QWidget):
 				section_layout.addLayout(product_layout)
 				layout_num += 1
 			self.wrappers.addLayout(section_layout)
-		
-		self.props_templates()
-		self.section_templates()
-		self.button_templates()
-		self.setLayout(self.wrappers)
-
-	def templates(self, texti, label):
-		controllers['labels'].append(label)
-		if stores['products'].get(texti['products']) is not None:
-			stores['products'][texti['products']] += 1
-		else:
-			stores['products'][texti['products']] = 1
-		label.setText(f"{stores['products'][texti['products']]}")
-		stores['prices'] += texti['prices']
-		label.setText(str(stores['products'][texti['products']]))
-		self.moneys_label.setText(f"Total Moneys: {stores['prices']}")
 
 	def props_templates(self):
 		self.moneys_label = QLabel('Total Moneys: ')
@@ -153,6 +143,17 @@ class MainWindow(QWidget):
 			stores['customers'] += int(self.customer_edit.text())
 		self.customer_label.setText(f"Customers: {stores['customers']}")
 
+	def templates(self, texti, label):
+		controllers['labels'].append(label)
+		if stores['products'].get(texti['products']) is not None:
+			stores['products'][texti['products']] += 1
+		else:
+			stores['products'][texti['products']] = 1
+		label.setText(f"{stores['products'][texti['products']]}")
+		stores['prices'] += texti['prices']
+		label.setText(str(stores['products'][texti['products']]))
+		self.moneys_label.setText(f"Total Moneys: {stores['prices']}")
+
 	def any_button_submit(self):
 		total_money = 0
 		total_products = 0
@@ -207,13 +208,15 @@ class MainWindow(QWidget):
 	def expenses_submit(self):
 		global mainWin
 		mainWin = ExpenseWindow()
+		scrolls = QScrollArea()
 		scrolls.setWidget(mainWin)
+		main_window.setCentralWidget(scrolls)
 		main_window.show()
 
 	def stats_submit(self):
 		global mainWin
 		mainWin = StatsWindow()
-		scrolls.setWidget(mainWin)
+		main_window.setCentralWidget(mainWin)
 		main_window.show()
 
 	def reset_submit(self):
@@ -251,62 +254,6 @@ class ExpenseWindow(QWidget):
 		self.section_templates()
 		self.props_templates()
 		self.setLayout(self.expense_wrappers)
-
-	def expense_submit(self):
-		if int(self.expense_edit.text()) < 999:
-			outers['expenses'] += int(self.expense_edit.text()) * 1000
-		else:
-			outers['expenses'] += int(self.expense_edit.text()) * 1000
-	
-	def reason_submit(self):
-		outers['reasons'] += self.reason_edit.text()
-		self.reasons_label.setText(f"Reasons: {outers['reasons']}")
-
-	def templates(self, texti, label):
-		controllers['labels'].append(label)
-		if outers['outers'].get(texti['products']) is not None:
-			outers['outers'][texti['products']] += 1
-		else:
-			outers['outers'][texti['products']] = 1
-		label.setText(f"{outers['outers'][texti['products']]}")
-		outers['expenses'] += -texti['prices']
-		label.setText(str(outers['outers'][texti['products']]))
-		self.expenses_label.setText(f"Expenses: {outers['expenses']}")
-
-	def reset_submit(self):
-		for i in controllers['labels']:
-			i.setText('')
-
-		self.expenses_label.setText('Total Moneys: ')
-		self.reasons_label.setText('Total Expenses: ')
-
-		self.expense_edit.clear()
-		self.reason_edit.clear()
-
-		global_var()
-
-	def accept_submit(self):
-		saves()
-		global_var()
-
-	def menus_submit(self):
-		global mainWin
-		mainWin = MainWindow()
-		scrolls.setWidget(mainWin)
-		main_window.show()
-
-	def stats_submit(self):
-		global mainWin
-		mainWin = StatsWindow()
-		scrolls.setWidget(mainWin)
-		main_window.show()
-
-	def menu_submit(self):
-		global mainWin
-		mainWin = MainWindow()
-		scrolls.setWidget(mainWin)
-		main_window.show()
-		print(mainWin)
 
 	def section_templates(self):
 		expense_layout = QHBoxLayout()
@@ -396,6 +343,205 @@ class ExpenseWindow(QWidget):
 				layout_num += 1
 			self.expense_wrappers.addLayout(section_layout)
 
+	def expense_submit(self):
+		if int(self.expense_edit.text()) < 999:
+			outers['expenses'] += int(self.expense_edit.text()) * 1000
+		else:
+			outers['expenses'] += int(self.expense_edit.text()) * 1000
+	
+	def reason_submit(self):
+		outers['reasons'] += self.reason_edit.text()
+		self.reasons_label.setText(f"Reasons: {outers['reasons']}")
+
+	def templates(self, texti, label):
+		controllers['labels'].append(label)
+		if outers['outers'].get(texti['products']) is not None:
+			outers['outers'][texti['products']] += 1
+		else:
+			outers['outers'][texti['products']] = 1
+		label.setText(f"{outers['outers'][texti['products']]}")
+		outers['expenses'] += -texti['prices']
+		label.setText(str(outers['outers'][texti['products']]))
+		self.expenses_label.setText(f"Expenses: {outers['expenses']}")
+
+	def reset_submit(self):
+		for i in controllers['labels']:
+			i.setText('')
+
+		self.expenses_label.setText('Total Moneys: ')
+		self.reasons_label.setText('Total Expenses: ')
+
+		self.expense_edit.clear()
+		self.reason_edit.clear()
+
+		global_var()
+
+	def accept_submit(self):
+		saves()
+		global_var()
+
+	def menus_submit(self):
+		global mainWin
+		mainWin = MainWindow()
+		scrolls = QScrollArea()
+		scrolls.setWidget(mainWin)
+		main_window.setCentralWidget(scrolls)
+		main_window.show()
+
+	def stats_submit(self):
+		global mainWin
+		mainWin = StatsWindow()
+		main_window.setCentralWidget(mainWin)
+		main_window.show()
+
+	def menu_submit(self):
+		global mainWin
+		mainWin = MainWindow()
+		scrolls = QScrollArea()
+		scrolls.setWidget(mainWin)
+		main_window.setCentralWidget(scrolls)
+		main_window.show()
+		print(mainWin)
+
+class StatsWindow(QWidget):
+	def __init__(self):
+		super().__init__()
+		self.stats_wrapper = QVBoxLayout()
+		self.labels_templates()
+		self.buttons_templates()
+		self.setLayout(self.stats_wrapper)
+
+	def buttons_templates(self):
+		menus_button = QPushButton('Menus')
+		menus_button.clicked.connect(self.menus_submit)
+		expenses_button = QPushButton('Expenses')
+		expenses_button.clicked.connect(self.expenses_submit)
+
+		button_layout = QHBoxLayout()
+		button_layout.addWidget(menus_button)
+		button_layout.addWidget(expenses_button)
+
+		current_button = QPushButton('Current')
+		current_button.clicked.connect(self.current_button_submit)
+		any_button = QPushButton('Any')
+		any_button.clicked.connect(self.any_button_submit)
+
+		button_layout2 = QHBoxLayout()
+		button_layout2.addWidget(current_button)
+		button_layout2.addWidget(any_button)
+
+		self.stats_wrapper.addLayout(button_layout)
+		self.stats_wrapper.addLayout(button_layout2)
+
+	def labels_templates(self):
+		layout1 = QVBoxLayout()
+		layout1.setAlignment(Qt.AlignmentFlag.AlignLeft)
+		self.moneys = QLabel('Moneys: ')
+		layout1.addWidget(self.moneys)
+		self.products = QLabel('Products: ')
+		layout1.addWidget(self.products)
+		self.expenses = QLabel('Expenses: ')
+		layout1.addWidget(self.expenses)
+		self.cuts = QLabel('Cuts: ')
+		layout1.addWidget(self.cuts)
+
+		layout2 = QVBoxLayout()
+		layout2.setAlignment(Qt.AlignmentFlag.AlignLeft)
+		self.bases = QLabel('Bases: ')
+		layout2.addWidget(self.bases)
+		self.originals = QLabel('Original: ')
+		layout2.addWidget(self.originals)
+		self.profits = QLabel('Profits: ')
+		layout2.addWidget(self.profits)
+		self.cleans = QLabel('Cleans: ')
+		layout2.addWidget(self.cleans)
+
+		layout_wrappers = QHBoxLayout()
+		layout_wrappers.addLayout(layout1)
+		layout_wrappers.addLayout(layout2)
+
+		self.stats_wrapper.addLayout(layout_wrappers)
+		self.current_button_submit()
+
+	def any_button_submit(self):
+		moneys = 0
+		products = 0
+		expenses = 0
+		cuts = 0
+		bases = 0
+		originals = 0
+		profits = 0
+		for file in glob.glob('./*.json'):
+			with open(file, 'r+') as file:
+				json_content = json.load(file)
+			for element in list(json_content):
+				for elem in json_content[element].get('products', []):
+					products += elem.get('numbers', 0)
+					cuts += elem.get('cuts', 0)
+					bases += elem.get('bases', 0)
+					moneys += elem.get('prices', 0)
+					originals += elem.get('original', 0)
+					profits += elem.get('profits', 0)
+				expenses += json_content[element].get('expenses', 0)
+		cleans = profits + expenses
+
+		self.moneys.setText(f'Moneys: {moneys}')
+		self.products.setText(f'Products: {products}')
+		self.expenses.setText(f'Expenses: {expenses}')
+		self.cuts.setText(f'Cuts: {cuts}')
+
+		self.bases.setText(f'Bases: {bases}')
+		self.originals.setText(f'Originals: {originals}')
+		self.profits.setText(f'Profits: {profits}')
+		self.cleans.setText(f'Cleans: {cleans}')
+
+	def current_button_submit(self):
+		with open(location, 'r+') as file:
+			json_content = json.load(file)
+		moneys = 0
+		products = 0
+		expenses = 0
+		cuts = 0
+		bases = 0
+		originals = 0
+		profits = 0
+		for element in list(json_content):
+			for elem in json_content[element].get('products', []):
+				products += elem.get('numbers', 0)
+				cuts += elem.get('cuts', 0)
+				bases += elem.get('bases', 0)
+				moneys += elem.get('prices', 0)
+				originals += elem.get('original', 0)
+				profits += elem.get('profits', 0)
+			expenses += json_content[element].get('expenses', 0)
+		cleans = profits + expenses
+
+		self.moneys.setText(f'Moneys: {moneys}')
+		self.products.setText(f'Products: {products}')
+		self.expenses.setText(f'Expenses: {expenses}')
+		self.cuts.setText(f'Cuts: {cuts}')
+
+		self.bases.setText(f'Bases: {bases}')
+		self.originals.setText(f'Originals: {originals}')
+		self.profits.setText(f'Profits: {profits}')
+		self.cleans.setText(f'Cleans: {cleans}')
+
+	def menus_submit(self):
+		global mainWin
+		mainWin = MainWindow()
+		scrolls = QScrollArea()
+		scrolls.setWidget(mainWin)
+		main_window.setCentralWidget(scrolls)
+		main_window.show()
+
+	def expenses_submit(self):
+		global mainWin, scrolls
+		mainWin = ExpenseWindow()
+		scrolls = QScrollArea()
+		scrolls.setWidget(mainWin)
+		main_window.setCentralWidget(scrolls)
+		main_window.show()
+
 def global_var():
 	global controllers, stores, outers
 	stores = {'products': {}, 'prices': 0, 'customers': 0, 'paybacks': 0}
@@ -456,7 +602,7 @@ if __name__ == "__main__":
 	scrolls = QScrollArea()
 	scrolls.setWidget(mainWin)
 	main_window.setCentralWidget(scrolls)
-	main_window.setWindowTitle('Icelander v1.3')
+	main_window.setWindowTitle('Icelander v1.5')
 	main_window.setWindowIcon(QIcon('icelander.ico'))
 	main_window.resize(450, 600)
 	main_window.show()
