@@ -27,7 +27,7 @@
 		{
 			"products": "Strawberry Sakura Mochi",
 			"categories": "mochi",
-			"icons": "img/frostbite/frostbite_mochi_choco_lava.jpg",
+			"icons": "img/frostbite/frostbite_cup_strawberry_vanilla.jpg",
 			"prices": 4000,
 			"bases": 3000,
 			"cuts": 1000,
@@ -52,8 +52,8 @@
 			"products": "Boba Milk Tea",
 			"categories": "batang",
 			"icons": "img/frostbite/frostbite_boba_milk_tea.jpg",
-			"prices": 4000,
-			"bases": 3000,
+			"prices": 5000,
+			"bases": 4000,
 			"cuts": 1000,
 			"profits": 770.9,
 			"original": 3229.10,
@@ -75,7 +75,7 @@
 		{
 			"products": "Chocolate Vanilla",
 			"categories": "cup",
-			"icons": "img/frostbite/frostbite_cup_strawberry_vanilla.jpg",
+			"icons": "img/frostbite/frostbite_cup_chocolate_vanilla.jpg",
 			"prices": 5000,
 			"bases": 4500,
 			"cuts": 500,
@@ -111,7 +111,7 @@
 		{
 			"products": "Cookies & Cream Stick",
 			"categories": "batang",
-			"icons": "img/frostbite/frostbite_cup_tutti_frutti.jpg",
+			"icons": "img/frostbite/frostbite_cookies_cream_stick.jpg",
 			"prices": 6000,
 			"bases": 5000,
 			"cuts": 1000,
