@@ -54,10 +54,10 @@ class MainWindow(QWidget):
 
 		button_layout = QVBoxLayout()
 		add_button = QPushButton('Add')
-		add_button.clicked.connect(lambda *args, texti=self.comboBox.currentText(): self.add_submit(texti, None))
+		add_button.clicked.connect(lambda: self.add_submit(None, None))
 		button_layout.addWidget(add_button)
 		remove_button = QPushButton('Remove')
-		remove_button.clicked.connect(lambda *args, texti=self.comboBox.currentText(): self.remove_submit(texti, None))
+		remove_button.clicked.connect(lambda: self.remove_submit(None, None))
 		button_layout.addWidget(remove_button)
 
 		search_wrappers = QHBoxLayout()
@@ -79,17 +79,22 @@ class MainWindow(QWidget):
 			while not products_num == products_total:
 				product_layout = QHBoxLayout()
 				for _ in range(4):
+					texti = json_content[element][products_num]['products']
 					btn_layout = QVBoxLayout()
 					btn_label = QLabel()
+					name_label = QLabel(texti)
+					price_label = QLabel(str(json_content[element][products_num]['prices']))
 					btn = QPushButton()
+					btn_label.setAccessibleName(texti)
 					btn.setMinimumSize(QSize(100, 100))
 					btn.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
 					btn.setIcon(QIcon(json_content[element][products_num]['icons']))
 					btn.setIconSize(QSize(110, 110))
-					texti = json_content[element][products_num]['products']
 					btn.clicked.connect(lambda *args, texti=texti, btn_label=btn_label: self.templates(texti, btn_label))
 					btn_layout.addWidget(btn)
-					btn_layout.addWidget(btn_label)
+					btn_layout.addWidget(btn_label, alignment=Qt.AlignmentFlag.AlignCenter)
+					btn_layout.addWidget(name_label, alignment=Qt.AlignmentFlag.AlignCenter)
+					btn_layout.addWidget(price_label, alignment=Qt.AlignmentFlag.AlignCenter)
 					product_layout.addLayout(btn_layout)
 					if not (products_num == products_total):
 						products_num += 1
@@ -193,7 +198,7 @@ class MainWindow(QWidget):
 		self.customer_label.setText(f"Customers: {stores['customers']}")
 
 	def templates(self, texti, label):
-		controllers['labels'].append(label)
+		stores['labels'].append(label)
 		if stores['products'].get(texti['products']) is not None:
 			stores['products'][texti['products']] += 1
 		else:
@@ -202,6 +207,7 @@ class MainWindow(QWidget):
 		stores['prices'] += texti['prices']
 		label.setText(str(stores['products'][texti['products']]))
 		self.moneys_label.setText(f"Total Moneys: {stores['prices']}")
+		print(controllers)
 
 	def any_button_submit(self):
 		total_money = 0
@@ -262,7 +268,7 @@ class MainWindow(QWidget):
 		self.switchers_label.setText(f"Switchers: {controllers['operators']}")
 
 	def templates(self, labels, reff):
-		controllers['labels'].append(reff)
+		stores['labels'].append(reff)
 		if controllers['operators'] == '+':
 			self.add_submit(labels, reff)
 		else:
@@ -286,6 +292,8 @@ class MainWindow(QWidget):
 		main_window.show()
 
 	def add_submit(self, labels, reff):
+		if labels is None:
+			labels = self.comboBox.currentText()
 		with open('./bin/properties.json', 'r+') as file:
 			json_content = json.load(file)
 		for element in list(json_content):
@@ -299,8 +307,13 @@ class MainWindow(QWidget):
 		self.moneys_label.setText(f"Total Moneys: {stores['prices']}")
 		if reff is not None:
 			reff.setText(str(stores['products'][labels]))
+		for element in stores['labels']:
+			if element.accessibleName() == labels:
+				element.setText(str(stores['products'][labels]))
 
 	def remove_submit(self, labels, reff):
+		if labels is None:
+			labels = self.comboBox.currentText()
 		with open('./bin/properties.json', 'r+') as file:
 			json_content = json.load(file)
 		for element in list(json_content):
@@ -314,9 +327,15 @@ class MainWindow(QWidget):
 		self.moneys_label.setText(f"Total Moneys: {stores['prices']}")
 		if reff is not None:
 			reff.setText(str(stores['products'][labels]))
+		for element in stores['labels']:
+			print(element.accessibleName())
+			print(labels)
+			if element.accessibleName() == labels:
+				element.setText(str(stores['products'][labels]))
+		print(controllers)
 
 	def reset_submit(self):
-		for i in controllers['labels']:
+		for i in stores['labels']:
 			i.setText('')
 
 		self.moneys_label.setText('Total Moneys: ')
@@ -433,10 +452,10 @@ class ExpenseWindow(QWidget):
 
 		button_layout = QVBoxLayout()
 		add_button = QPushButton('Add')
-		add_button.clicked.connect(lambda *args, texti=self.comboBox.currentText(): self.add_submit(texti, None))
+		add_button.clicked.connect(lambda: self.add_submit(None, None))
 		button_layout.addWidget(add_button)
 		remove_button = QPushButton('Remove')
-		remove_button.clicked.connect(lambda *args, texti=self.comboBox.currentText(): self.remove_submit(texti, None))
+		remove_button.clicked.connect(lambda: self.remove_submit(None, None))
 		button_layout.addWidget(remove_button)
 
 		search_wrappers = QHBoxLayout()
@@ -458,17 +477,22 @@ class ExpenseWindow(QWidget):
 			while not products_num == products_total:
 				product_layout = QHBoxLayout()
 				for _ in range(4):
+					texti = json_content[element][products_num]['products']
 					btn_layout = QVBoxLayout()
 					btn_label = QLabel()
+					name_label = QLabel(texti)
+					price_label = QLabel(str(json_content[element][products_num]['prices']))
+					btn_label.setAccessibleName(texti)
 					btn = QPushButton()
 					btn.setMinimumSize(QSize(100, 100))
 					btn.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
 					btn.setIcon(QIcon(json_content[element][products_num]['icons']))
 					btn.setIconSize(QSize(110, 110))
-					texti = json_content[element][products_num]['products']
 					btn.clicked.connect(lambda *args, texti=texti, btn_label=btn_label: self.templates(texti, btn_label))
 					btn_layout.addWidget(btn)
 					btn_layout.addWidget(btn_label)
+					btn_layout.addWidget(name_label, alignment=Qt.AlignmentFlag.AlignCenter)
+					btn_layout.addWidget(price_label, alignment=Qt.AlignmentFlag.AlignCenter)
 					product_layout.addLayout(btn_layout)
 					if not (products_num == products_total):
 						products_num += 1
@@ -496,13 +520,15 @@ class ExpenseWindow(QWidget):
 		self.switchers_label.setText(f"Switchers: {controllers['operators']}")
 
 	def templates(self, labels, reff):
-		controllers['labels'].append(reff)
+		outers['labels'].append(reff)
 		if controllers['operators'] == '+':
 			self.add_submit(labels, reff)
 		else:
 			self.remove_submit(labels, reff)
 
 	def add_submit(self, labels, reff):
+		if labels is None:
+			labels = self.comboBox.currentText()
 		with open('./bin/properties.json', 'r+') as file:
 			json_content = json.load(file)
 		for element in list(json_content):
@@ -516,10 +542,13 @@ class ExpenseWindow(QWidget):
 		self.expenses_label.setText(f"Expenses: {outers['expenses']}")
 		if reff is not None:
 			reff.setText(str(outers['outers'][labels]))
-		print(controllers)
-		print(outers)
+		for element in outers['labels']:
+			if element.accessibleName() == labels:
+				element.setText(str(outers['outers'][labels]))
 
 	def remove_submit(self, labels, reff):
+		if labels is None:
+			labels = self.comboBox.currentText()
 		with open('./bin/properties.json', 'r+') as file:
 			json_content = json.load(file)
 		for element in list(json_content):
@@ -533,9 +562,12 @@ class ExpenseWindow(QWidget):
 		self.expenses_label.setText(f"Expenses: {outers['expenses']}")
 		if reff is not None:
 			reff.setText(str(outers['outers'][labels]))
+		for element in outers['labels']:
+			if element.accessibleName() == labels:
+				element.setText(str(outers['outers'][labels]))
 
 	def reset_submit(self):
-		for i in controllers['labels']:
+		for i in outers['labels']:
 			i.setText('')
 
 		self.expenses_label.setText('Expenses: ')
@@ -713,9 +745,9 @@ class StatsWindow(QWidget):
 
 def global_var():
 	global controllers, stores, outers
-	stores = {'products': {}, 'prices': 0, 'customers': 0, 'paybacks': 0}
-	outers = {'outers': {}, 'expenses': 0, 'reasons': ''}
-	controllers = {'labels': [], 'operators': '+'}
+	stores = {'products': {}, 'labels': [], 'prices': 0, 'customers': 0, 'paybacks': 0}
+	outers = {'outers': {}, 'labels': [], 'expenses': 0, 'reasons': ''}
+	controllers = {'operators': '+'}
 
 def saves():
 	dates = str(datetime.datetime.now().strftime('%Y%m%d_%H%M%S'))
@@ -773,7 +805,7 @@ if __name__ == "__main__":
 	scrolls.setWidgetResizable(True)
 	scrolls.setWidget(mainWin)
 	main_window.setCentralWidget(scrolls)
-	main_window.setWindowTitle('Icelander v1.6')
+	main_window.setWindowTitle('Icelander v1.7')
 	main_window.setWindowIcon(QIcon('icelander.ico'))
 	main_window.resize(450, 600)
 	main_window.show()
